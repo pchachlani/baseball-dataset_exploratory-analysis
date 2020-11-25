@@ -22,59 +22,59 @@ run;
 
 /**** univariate analyses and graphs of numeric variable "salary" ****/
 proc means data=baseball;
-var salary;
+	var salary;
 run;
 
 proc univariate data=baseball plots;
-var salary;
+	var salary;
 run;
 
 proc sgplot data=baseball;
-histogram salary;
+	histogram salary;
 run;
 
 /**** Explore categorical variables ****/
 proc freq data=baseball;
-table FA_Eligible;
-table FA_Eligible*FA_9192;
+	table FA_Eligible;
+	table FA_Eligible*FA_9192;
 run;
 
 proc freq data=baseball;
-table FA_Eligible*Arb_Eligible;
+	table FA_Eligible*Arb_Eligible;
 run;
 
 
 
 /**** explore the correlation between "salary" and several numeric variables ****/
 proc corr data=baseball plots=matrix;
-var avg runs hits;
-with salary;
+	var avg runs hits;
+	with salary;
 run;
 
 proc sgplot data=baseball;
-scatter x=avg y=salary;
+	scatter x=avg y=salary;
 run;
 
 /**** explore the relationship between "salary" and categorical variable "FA_Eligible" ****/
 proc means data=baseball;
-var salary;
-class FA_Eligible;
+	var salary;
+	class FA_Eligible;
 run;
 
 
 proc sgplot data=baseball;
-vbox salary /group=FA_Eligible;
+	vbox salary /group=FA_Eligible;
 run;
 
 
 /**** Transform salary ****/
 data baseball;
-set baseball;
-log_salary=log(salary);
+	set baseball;
+	log_salary=log(salary);
 run;
 
 proc univariate data=baseball plots;
-var log_salary avg;
+	var log_salary avg;
 run;
 
 /**** Try to correlate different variables with "log_salary" ****/
@@ -89,44 +89,44 @@ run;
  
 /**** display the relationship between "log_salary" and "avg"/"RBI" by group ****/
 proc sgplot data=baseball;
-scatter x=avg y=log_salary/group=FA_Eligible;
-loess x=avg y=log_salary/group=FA_Eligible;
+	scatter x=avg y=log_salary/group=FA_Eligible;
+	loess x=avg y=log_salary/group=FA_Eligible;
 run;
 
 proc sgplot data=baseball;
-scatter x=RBI y=log_salary/group=FA_Eligible;
-loess x=RBI y=log_salary/group=FA_Eligible;
+	scatter x=RBI y=log_salary/group=FA_Eligible;
+	loess x=RBI y=log_salary/group=FA_Eligible;
 run;
 
 /**** One-sample t-test ****/
 proc ttest data=baseball; *possible options here: h0= side= alpha=;
-var avg;
+	var avg;
 run;
 
 /**** Two-sample t-tests ****/
 proc ttest data=baseball;
-var log_salary;
-class FA_Eligible;
+	var log_salary;
+	class FA_Eligible;
 run;
 
 proc ttest data=baseball;
-var avg;
-class FA_Eligible;
+	var avg;
+	class FA_Eligible;
 run;
 
 /**** Paired t-tests ****/
 proc ttest data=baseball;
-paired Triples*HRs;
+	paired Triples*HRs;
 run;
 
 /**** Simple linear regression ****/
 proc reg data=baseball;
-model log_salary=RBI;
+	model log_salary=RBI;
 run;
 
 /**** or use PROC GLM ****/
 proc glm data=baseball;
-model log_salary=RBI;
+	model log_salary=RBI;
 run;
 
 /**** Linear regression with more than one predictor ****/
@@ -138,7 +138,7 @@ run;
 /**** selection=RSQUARE: rank all possible models according to R^2 (note a good idea) ****/
 /**** so output aic bic cp adjrsq for comparison        ****/
 proc reg data=baseball;
-model log_salary=runs hits FA_Eligible walks RBI SOs/collin selection=RSQUARE aic bic cp adjrsq;
+	model log_salary=runs hits FA_Eligible walks RBI SOs/collin selection=RSQUARE aic bic cp adjrsq;
 run;
 
 
